@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% load socialaccount %}
+
+
+{% block content %}
+<h1> Login page</h1>
+<div>
+    <form method = "post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">LogIn</button>
+
+
+
+    </form>
+
+
+
+</div>
+<div>
+    <a href="{% provider_login_url 'vk' %}">войти с помощью VK (django-allauth)</a>
+</div>
+
+<div>
+    <a href="{% provider_login_url 'google' %}">войти с помощью google (django-allauth)</a>
+</div>
+
+<div>
+    <a href="{% provider_login_url 'yandex' %}">войти с помощью yandex (django-allauth)</a>
+</div>
+
+
+<div>если у вас есть нет  аккаунта, то пройдите по ссылке чтобы создать:<a href="{% url 'signin' %}">Signin</a>  </div>
+
+{% endblock content %}
