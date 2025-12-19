@@ -18,7 +18,7 @@ RUN poetry config virtualenvs.create false && \
 
 FROM python:3.12
 
-WORKDIR /app
+WORKDIR /auth_project
 
 ENV GUNICORN_TIMEOUT=0
 
