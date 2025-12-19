@@ -1,14 +1,10 @@
-name: Build and Push Docker Image
+# .github/workflows/build.yml
+name: Simple Docker Build and Push
 
 on:
   push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build-and-push:
@@ -18,35 +14,35 @@ jobs:
       packages: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Log in to GitHub Container Registry
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3
+      - name: Build Docker image
+        run: docker build -t ghcr.io/${{ github.repository }}:latest -f django-backend/Dockerfile django-backend
+
+      - name: Push Docker image
+        run: docker push ghcr.io/${{ github.repository }}:latest
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            echo "${{ secrets.VPS_GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Extract metadata for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=raw,value=latest
-            type=sha,prefix={{branch}}-
+            docker pull ghcr.io/${{ github.repository }}:latest
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+            cd /home/ubuntu/django
+
+            docker compose down && docker compose up -d
+
+            docker logout ghcr.io
+
+      - name: Logout from GitHub Container Registry
+        if: always()
+        run: docker logout ghcr.io
