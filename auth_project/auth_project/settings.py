@@ -154,8 +154,8 @@ SOCIALACCOUNT_PROVIDERS = {
     "vk": {
         "APPS": [
             {
-                "client_id": "****", #здесь должны быть ваши ваши данные 
-                "secret": "******", #здесь должны быть ваши ваши данные 
+                "client_id": "54365125", #здесь должны быть ваши ваши данные 
+                 "secret": "0HkVUBDD1WVQvGe3P16w", #здесь должны быть ваши ваши данные 
                 "key": "",
             },
         ],
@@ -170,8 +170,8 @@ SOCIALACCOUNT_PROVIDERS = {
      'yandex': {
         "APPS": [
             {
-                "client_id": "*****", #здесь должны быть ваши ваши данные 
-                "secret": "******", #здесь должны быть ваши ваши данные 
+               "client_id": "e8adcc096a524ed09e3713d36bc734f7", #здесь должны быть ваши ваши данные 
+                 "secret": "b7eb2e67c10342a6b7ca46c90eed81a2", #здесь должны быть ваши ваши данные 
                 "key": "",
             },
         ],
@@ -183,8 +183,8 @@ SOCIALACCOUNT_PROVIDERS = {
                "APPS": [
                    { 
             
-                "client_id": "*****", #здесь должны быть ваши ваши данные 
-                "secret": "******", #здесь должны быть ваши ваши данные 
+                "client_id": "883024256824-sbsgf1q63bmo2gqcb18rsjlcmgoqotkp.apps.googleusercontent.com", #здесь должны быть ваши ваши данные 
+                 "secret": "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", #здесь должны быть ваши ваши данные 
                 "key": "",
             },
                ], 
