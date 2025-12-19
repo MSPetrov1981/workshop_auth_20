@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
 # Создаем и переходим в рабочую директорию
-WORKDIR /auth_project
+WORKDIR /app
 
 # Устанавливаем системные зависимости
 RUN apt-get update && apt-get install -y \
@@ -20,11 +20,11 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Копируем и устанавливаем Python зависимости
-COPY requirements.txt /auth_project/
+COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Копируем весь проект
-COPY . /auth_project
+COPY  auth_project/ ./app
 
 # Создаем директории для статики и медиа
 RUN mkdir -p /auth_project/staticfiles /app/media
