@@ -25,6 +25,8 @@ COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/pytho
 COPY --from=builder /usr/local/bin /usr/local/bin
 
 COPY . ./
+RUN pip install --no-cache-dir -r requirements.txt
+
 
 RUN chmod +x ./entrypoint-prod.sh
 
